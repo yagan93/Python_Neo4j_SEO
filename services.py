@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import repository
+import json
 
 
 def get_anchor_href_combinations(url):
@@ -42,6 +43,21 @@ def get_anchors_with_ambiguous_hrefs(url):
             ambiguous_hrefs[key] = href_anchor_dict[key]
     repository.embed_ambiguous_combinations(ambiguous_hrefs, 0)
     return ambiguous_hrefs
+
+
+def get_synonyms_of_word(word):
+    synonyms_of_word = []
+    response = requests.get("https://api.dictionaryapi.dev/api/v2/entries/en/" + word)
+    if response.status_code == 200:
+        for part_of_speech in json.loads(response.content):
+            for meaning in part_of_speech['meanings']:
+                synonyms = meaning['synonyms']
+                if not isinstance(synonyms, list):
+                    synonyms_of_word.append(synonyms)
+                else:
+                    for synonym in synonyms:
+                        synonyms_of_word.append(synonym)
+    return synonyms_of_word
 
 
 def _append_value(dict_obj, key, value):
