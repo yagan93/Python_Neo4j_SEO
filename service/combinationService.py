@@ -22,7 +22,7 @@ def get_href_with_ambiguous_anchors(url):
         if link["href"] != "":
             _append_value(href_anchor_dict, link["href"], link.getText().replace("\n", "").replace(" ", ""))
     for key in href_anchor_dict:
-        if isinstance(href_anchor_dict[key], list) and len(href_anchor_dict[key]) == len(set(href_anchor_dict[key])):
+        if isinstance(href_anchor_dict[key], list) and len(set(href_anchor_dict[key]) > 1):
             ambiguous_anchors[key] = href_anchor_dict[key]
     Repository.embed_ambiguous_combinations(ambiguous_anchors, 1)
     return ambiguous_anchors
