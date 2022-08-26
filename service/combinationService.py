@@ -38,7 +38,7 @@ def get_anchors_with_ambiguous_hrefs(url):
         if anchor_tag != "":
             _append_value(href_anchor_dict, anchor_tag, link["href"])
     for key in href_anchor_dict:
-        if isinstance(href_anchor_dict[key], list) and len(href_anchor_dict[key]) == len(set(href_anchor_dict[key])):
+        if isinstance(href_anchor_dict[key], list) and len(set(href_anchor_dict[key]) > 1):
             ambiguous_hrefs[key] = href_anchor_dict[key]
     Repository.embed_ambiguous_combinations(ambiguous_hrefs, 0)
     return ambiguous_hrefs
